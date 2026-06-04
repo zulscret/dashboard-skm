@@ -200,7 +200,7 @@ body {
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
 }
-.card-header-title { font-size: 14px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.4px; }
+.card-header-title { font-size: 16px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.4px; }
 
 /* ===== IKM HERO (Admin) ===== */
 .ikm-hero-grid {
@@ -228,10 +228,10 @@ body {
   width: 100px; height: 100px; border-radius: 50%;
   background: rgba(255,255,255,0.05);
 }
-.ikm-label-small { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; }
-.ikm-score { font-size: 48px; font-weight: 800; line-height: 1; margin: 4px 0 2px; }
-.ikm-score-max { font-size: 16px; font-weight: 400; color: rgba(255,255,255,0.7); }
-.ikm-periode { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 8px; }
+.ikm-label-small { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; }
+.ikm-score { font-size: 56px; font-weight: 800; line-height: 1; margin: 4px 0 2px; }
+.ikm-score-max { font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.7); }
+.ikm-periode { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 8px; }
 
 .stat-card {
   background: var(--white);
@@ -240,9 +240,9 @@ body {
   padding: 16px 20px;
   box-shadow: var(--shadow-sm);
 }
-.stat-card-label { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-.stat-card-value { font-size: 32px; font-weight: 800; line-height: 1; }
-.stat-card-sub { font-size: 13px; color: var(--text-muted); margin-top: 5px; }
+.stat-card-label { font-size: 14px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.stat-card-value { font-size: 40px; font-weight: 800; line-height: 1; }
+.stat-card-sub { font-size: 15px; color: var(--text-muted); margin-top: 5px; }
 
 /* ===== MUTU BADGE ===== */
 .mutu-badge {
@@ -280,12 +280,12 @@ body {
 }
 .unsur-card.active { border-color: var(--navy); border-width: 2px; }
 .unsur-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.unsur-kode { font-size: 12px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.5px; }
-.unsur-nama { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.4; min-height: 36px; }
-.unsur-score { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.unsur-kode { font-size: 14px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.5px; }
+.unsur-nama { font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.4; min-height: 36px; }
+.unsur-score { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
 .progress-track { height: 6px; background: var(--bg); border-radius: 99px; overflow: hidden; margin-bottom: 6px; border: 1px solid var(--border); }
 .progress-fill { height: 100%; border-radius: 99px; transition: width 0.8s ease; }
-.unsur-scale { font-size: 11px; color: var(--text-light); text-align: right; }
+.unsur-scale { font-size: 12px; color: var(--text-light); text-align: right; }
 
 /* ===== CHARTS ===== */
 .charts-row {
