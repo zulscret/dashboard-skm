@@ -102,11 +102,13 @@ function renderCharts(hasil) {
   Charts.renderBarUnsur("chart-bar", hasil.nrrPerUnsur);
   Charts.renderDonutDistribusi("chart-donut", hasil.distribusi[currentUnsurIdx], hasil.totalResponden);
   
-  // Render Trend Line
-  const historyData = Storage.getHistoriTren();
-  // Override the last null item with the current IKM
-  historyData[historyData.length - 1].ikm = parseFloat(hasil.nik.toFixed(2));
-  Charts.renderLineTrend("chart-trend", historyData);
+  // Render Trend Line (dengan fallback jika cache browser belum update)
+  if (typeof Storage.getHistoriTren === "function" && typeof Charts.renderLineTrend === "function") {
+    const historyData = Storage.getHistoriTren();
+    // Override the last null item with the current IKM
+    historyData[historyData.length - 1].ikm = parseFloat(hasil.nik.toFixed(2));
+    Charts.renderLineTrend("chart-trend", historyData);
+  }
 }
 
 function renderProfilResponden(responden) {
