@@ -216,4 +216,57 @@ const Charts = {
       },
     });
   },
+
+  /** Line chart — Tren IKM Berkelanjutan */
+  renderLineTrend(canvasId, historyData) {
+    this.destroy(canvasId);
+    const ctx = document.getElementById(canvasId)?.getContext("2d");
+    if (!ctx) return;
+
+    const labels = historyData.map(d => d.periode);
+    const data = historyData.map(d => d.ikm);
+
+    this.instances[canvasId] = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: "Nilai IKM",
+          data,
+          borderColor: "#1e3a5f",
+          backgroundColor: "rgba(30,58,95,0.1)",
+          borderWidth: 3,
+          pointBackgroundColor: "#c0392b",
+          pointBorderColor: "#ffffff",
+          pointBorderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => ` IKM: ${ctx.raw ? ctx.raw.toFixed(2) : 'Belum Ada'}`
+            }
+          }
+        },
+        scales: {
+          y: {
+            min: 60, max: 100, // Range IKM
+            grid: { color: "rgba(0,0,0,0.05)" }
+          },
+          x: {
+            grid: { display: false }
+          }
+        },
+        animation: { duration: 800 }
+      }
+    });
+  }
 };

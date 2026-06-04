@@ -101,6 +101,12 @@ function selectUnsur(idx) {
 function renderCharts(hasil) {
   Charts.renderBarUnsur("chart-bar", hasil.nrrPerUnsur);
   Charts.renderDonutDistribusi("chart-donut", hasil.distribusi[currentUnsurIdx], hasil.totalResponden);
+  
+  // Render Trend Line
+  const historyData = Storage.getHistoriTren();
+  // Override the last null item with the current IKM
+  historyData[historyData.length - 1].ikm = parseFloat(hasil.ikm.toFixed(2));
+  Charts.renderLineTrend("chart-trend", historyData);
 }
 
 function renderProfilResponden(responden) {

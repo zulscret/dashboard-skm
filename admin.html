@@ -34,7 +34,7 @@
       <a class="nav-item" href="index.html" target="_blank">Halaman Publik</a>
       <div class="sidebar-section-label" style="margin-top:16px">Lainnya</div>
       <a class="nav-item" href="https://form.jotform.com/251830774401453" target="_blank">Form Survei Jotform</a>
-      <div class="nav-item" onclick="printDashboard()">Cetak Laporan</div>
+      <a class="nav-item" href="laporan.html" target="_blank">Cetak Laporan Resmi</a>
       <div class="nav-item" onclick="logout()" style="color: var(--red-light); margin-top: 20px;">Keluar / Logout</div>
     </nav>
     <div class="sidebar-footer">
@@ -127,6 +127,22 @@
           <span style="font-size:12px;font-weight:400;color:var(--text-muted);margin-left:auto">Klik card untuk lihat distribusi jawaban</span>
         </div>
         <div class="unsur-grid" id="grid-unsur"></div>
+      </div>
+
+      <!-- TREN IKM CHART -->
+      <div class="section-gap">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-title">Tren Indeks Kepuasan Masyarakat Berkelanjutan</div>
+            <span style="font-size:11px;color:var(--text-muted)">Perbandingan Antar Periode</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap-sm">
+              <canvas id="chart-trend"></canvas>
+            </div>
+            <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:12px">Berdasarkan data historis IKM sebelumnya.</p>
+          </div>
+        </div>
       </div>
 
       <!-- CHARTS -->

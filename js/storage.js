@@ -45,6 +45,14 @@ const Storage = {
     }
   },
 
+  getHistoriTren() {
+    return [
+      { periode: "Semester I 2024", ikm: 78.50 },
+      { periode: "Semester II 2024", ikm: 80.20 },
+      { periode: "Semester I 2025", ikm: null } // The live value will replace this
+    ];
+  },
+
   addResponden(responden) {
     const all = this.getAllResponden();
     const newId = all.length > 0 ? Math.max(...all.map((r) => r.id)) + 1 : 1;

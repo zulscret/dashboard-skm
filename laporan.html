@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Laporan Resmi SKM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Styling khusus cetak A4 */
+    :root {
+      --text-color: #000;
+    }
+    body {
+      background: #e2e8f0;
+      margin: 0;
+      font-family: 'Times New Roman', Times, serif;
+      color: var(--text-color);
+      font-size: 12pt;
+      line-height: 1.5;
+    }
+    .a4-page {
+      background: white;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20mm auto;
+      padding: 25mm 20mm;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+      position: relative;
+    }
+    .kop-surat {
+      text-align: center;
+      border-bottom: 3px solid black;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .kop-logo { font-size: 48px; margin-right: 20px; }
+    .kop-text h1 { margin: 0; font-size: 16pt; text-transform: uppercase; }
+    .kop-text h2 { margin: 0; font-size: 18pt; font-weight: bold; text-transform: uppercase; }
+    .kop-text p { margin: 0; font-size: 10pt; }
+    
+    h3.bab-title { text-align: center; text-transform: uppercase; font-size: 14pt; margin-top: 30px; margin-bottom: 10px; }
+    h4.sub-bab { font-size: 12pt; margin-top: 20px; margin-bottom: 5px; }
+    
+    p { text-align: justify; margin-top: 0; margin-bottom: 10px; text-indent: 10mm; }
+    
+    table.lap-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px; margin-bottom: 20px;
+      font-size: 11pt;
+    }
+    table.lap-table th, table.lap-table td {
+      border: 1px solid black;
+      padding: 6px 10px;
+    }
+    table.lap-table th { background-color: #f3f4f6; text-align: center; }
+    
+    .ttd-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+      page-break-inside: avoid;
+    }
+    .ttd-box { text-align: center; width: 200px; }
+    .ttd-box .name { font-weight: bold; text-decoration: underline; margin-top: 80px; }
+
+    /* Print settings */
+    @media print {
+      body { background: white; }
+      .a4-page {
+        margin: 0; padding: 15mm; width: auto; min-height: auto;
+        box-shadow: none; page-break-after: always;
+      }
+      .no-print { display: none !important; }
+    }
+    
+    .btn-print {
+      position: fixed; top: 20px; right: 20px;
+      background: #1e3a5f; color: white; border: none;
+      padding: 10px 20px; border-radius: 6px; font-family: 'Inter', sans-serif;
+      cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .btn-print:hover { background: #142a45; }
+  </style>
+</head>
+<body>
+
+<button class="btn-print no-print" onclick="window.print()">🖨️ Cetak Dokumen</button>
+
+<div class="a4-page" id="report-content">
+  <!-- Kop Surat -->
+  <div class="kop-surat">
+    <div class="kop-logo">🏛</div>
+    <div class="kop-text">
+      <h1>Kementerian Dalam Negeri Republik Indonesia</h1>
+      <h2>Perpustakaan Amir Machmud</h2>
+      <p>Jl. Medan Merdeka Utara No.7, RT.5/RW.2, Gambir, Jakarta Pusat 10110</p>
+    </div>
+  </div>
+
+  <div style="text-align:center; font-weight:bold; font-size:14pt; margin-bottom:30px; text-decoration:underline;">
+    LAPORAN HASIL SURVEI KEPUASAN MASYARAKAT (SKM)<br>
+    <span id="lap-periode">PERIODE SEMESTER I TAHUN 2025</span>
+  </div>
+
+  <!-- BAB I -->
+  <h3 class="bab-title">BAB I<br>PENDAHULUAN</h3>
+  <h4 class="sub-bab">1.1 Latar Belakang</h4>
+  <p>Dalam rangka mengevaluasi kinerja pelayanan publik dan memenuhi amanat Undang-Undang Nomor 25 Tahun 2009 tentang Pelayanan Publik, Perpustakaan Amir Machmud Kementerian Dalam Negeri secara rutin menyelenggarakan Survei Kepuasan Masyarakat (SKM). Laporan ini disusun mengacu pada metode dan indikator yang ditetapkan dalam Peraturan Menteri Pendayagunaan Aparatur Negara dan Reformasi Birokrasi (PermenpanRB) Nomor 14 Tahun 2017.</p>
+  
+  <h4 class="sub-bab">1.2 Metode Pelaksanaan</h4>
+  <p>Survei ini dilaksanakan menggunakan metode kuesioner mandiri (self-administered questionnaire) berbasis elektronik melalui platform Jotform. Responden adalah para pengunjung atau pengguna layanan perpustakaan. Pengukuran menggunakan Skala Likert 1 sampai 4 terhadap 9 (sembilan) unsur pelayanan publik yang telah ditentukan. Teknik pengambilan sampel menggunakan metode <i>Accidental Sampling</i> selama periode survei berlangsung.</p>
+
+  <!-- BAB II -->
+  <h3 class="bab-title">BAB II<br>PROFIL RESPONDEN</h3>
+  <p>Berdasarkan data yang terkumpul pada periode ini, total responden yang telah berpartisipasi dalam pengisian survei adalah sebanyak <strong id="lap-total-resp">...</strong> responden. Berikut adalah rincian demografi responden:</p>
+  
+  <table class="lap-table">
+    <thead>
+      <tr><th>Kategori Demografi</th><th>Klasifikasi</th><th>Jumlah</th><th>Persentase</th></tr>
+    </thead>
+    <tbody id="tbl-demografi">
+      <!-- Diisi JS -->
+    </tbody>
+  </table>
+
+  <!-- BAB III -->
+  <h3 class="bab-title">BAB III<br>ANALISIS INDEKS KEPUASAN MASYARAKAT</h3>
+  <p>Berdasarkan hasil pengolahan data menggunakan rumus Nilai Rata-Rata (NRR) tertimbang dengan bobot konstan 0,11 sesuai PermenpanRB No. 14 Tahun 2017, diperoleh hasil analisis untuk 9 unsur pelayanan sebagai berikut:</p>
+
+  <table class="lap-table">
+    <thead>
+      <tr><th>No</th><th>Unsur Pelayanan SKM</th><th>Nilai Rata-rata (NRR)</th><th>Kategori Mutu</th></tr>
+    </thead>
+    <tbody id="tbl-unsur">
+      <!-- Diisi JS -->
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2" style="text-align:right;font-weight:bold;">Indeks Kepuasan Masyarakat (IKM) Konversi:</td>
+        <td colspan="2" style="text-align:center;font-weight:bold;font-size:14pt" id="lap-ikm-score">...</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align:right;font-weight:bold;">Mutu Pelayanan Unit Keseluruhan:</td>
+        <td colspan="2" style="text-align:center;font-weight:bold;font-size:14pt" id="lap-ikm-mutu">...</td>
+      </tr>
+    </tfoot>
+  </table>
+  <p>Hasil perhitungan di atas menunjukkan bahwa secara kumulatif, mutu pelayanan Perpustakaan Amir Machmud berada pada kategori <strong id="lap-kategori-text">...</strong>.</p>
+
+  <!-- BAB IV -->
+  <h3 class="bab-title">BAB IV<br>RENCANA TINDAK LANJUT</h3>
+  <p>Sesuai dengan ketentuan pedoman evaluasi, tindak lanjut perbaikan diprioritaskan pada unsur-unsur yang memiliki nilai terendah. Berdasarkan analisis, berikut adalah 3 (tiga) unsur pelayanan dengan nilai terendah yang memerlukan intervensi dan perbaikan segera:</p>
+  
+  <table class="lap-table">
+    <thead>
+      <tr><th>Prioritas</th><th>Unsur Pelayanan (Nilai Terendah)</th><th>Saran Perbaikan / Evaluasi Mandiri</th></tr>
+    </thead>
+    <tbody id="tbl-prioritas">
+      <!-- Diisi JS -->
+    </tbody>
+  </table>
+
+  <!-- BAB V -->
+  <h3 class="bab-title">BAB V<br>KESIMPULAN DAN REKOMENDASI</h3>
+  <p>Secara umum, penyelenggaraan pelayanan publik di Perpustakaan Amir Machmud Kementerian Dalam Negeri telah berjalan dengan <span id="lap-kesimpulan-mutu">...</span>, yang dibuktikan dengan capaian IKM sebesar <strong id="lap-kesimpulan-angka">...</strong>. Walaupun demikian, berdasarkan matriks prioritas di atas, pihak manajemen perpustakaan direkomendasikan untuk segera mengevaluasi Standar Operasional Prosedur (SOP) terutama pada aspek <strong><span id="lap-unsur-terlemah">...</span></strong> guna meningkatkan kepuasan pengunjung di periode berikutnya.</p>
+
+  <!-- Tanda Tangan -->
+  <div class="ttd-container">
+    <div class="ttd-box">
+      <div>Mengetahui,</div>
+      <div>Kepala Perpustakaan</div>
+      <div class="name">................................................</div>
+      <div>NIP. ........................................</div>
+    </div>
+    <div class="ttd-box">
+      <div>Jakarta, <span id="lap-tanggal">...</span></div>
+      <div>Petugas Administrasi / Pengolah Data</div>
+      <div class="name">Muhammad Zulvan Yahya</div>
+      <div>NIM/NIP. ..............................</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="js/data.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/storage.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    Storage.init();
+    const responden = Storage.getAllResponden();
+    const info = Storage.getSurveyInfo();
+    const hasil = Calculator.hitung(responden, null);
+
+    if (!hasil) {
+      document.getElementById("report-content").innerHTML = "<h2 style='text-align:center'>Belum ada data responden. Silakan input data terlebih dahulu di Dashboard Admin.</h2>";
+      return;
+    }
+
+    const $ = id => document.getElementById(id);
+    
+    // Header
+    $("lap-periode").textContent = `PERIODE ${info.periode.toUpperCase()}`;
+    $("lap-tanggal").textContent = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+    
+    // Bab II: Demografi
+    $("lap-total-resp").textContent = hasil.totalResponden;
+    const profil = Calculator.profilResponden(responden);
+    
+    let demoHtml = "";
+    // Laki-laki / Perempuan
+    const jkTotal = (profil.jk.L || 0) + (profil.jk.P || 0);
+    demoHtml += `<tr><td rowspan="2">Jenis Kelamin</td><td>Laki-laki</td><td style="text-align:center">${profil.jk.L || 0}</td><td style="text-align:center">${(((profil.jk.L||0)/jkTotal)*100).toFixed(1)}%</td></tr>`;
+    demoHtml += `<tr><td>Perempuan</td><td style="text-align:center">${profil.jk.P || 0}</td><td style="text-align:center">${(((profil.jk.P||0)/jkTotal)*100).toFixed(1)}%</td></tr>`;
+    
+    // Layanan Tertinggi
+    const layanans = Object.entries(profil.layanan).sort((a,b)=>b[1]-a[1]);
+    const topLayanan = layanans[0];
+    demoHtml += `<tr><td>Layanan Paling Sering Diakses</td><td>${topLayanan[0]}</td><td style="text-align:center">${topLayanan[1]}</td><td style="text-align:center">${((topLayanan[1]/hasil.totalResponden)*100).toFixed(1)}%</td></tr>`;
+    
+    $("tbl-demografi").innerHTML = demoHtml;
+
+    // Bab III: Unsur
+    $("tbl-unsur").innerHTML = hasil.nrrPerUnsur.map((nrr, i) => {
+      const m = Calculator.getMutuUnsur(nrr);
+      return `<tr>
+        <td style="text-align:center">${i+1}</td>
+        <td><strong>${UNSUR_SKM[i].kode}</strong> - ${UNSUR_SKM[i].nama}</td>
+        <td style="text-align:center">${nrr.toFixed(3)}</td>
+        <td style="text-align:center">${m.grade} (${m.label})</td>
+      </tr>`;
+    }).join("");
+    
+    $("lap-ikm-score").textContent = hasil.ikm.toFixed(2);
+    $("lap-ikm-mutu").textContent = `${hasil.mutu.grade} - ${hasil.mutu.label.toUpperCase()}`;
+    $("lap-kategori-text").textContent = `"${hasil.mutu.label}" (Mutu ${hasil.mutu.grade})`;
+
+    // Bab IV: Prioritas
+    const bottom3 = hasil.rankingUnsur.slice(0, 3);
+    $("tbl-prioritas").innerHTML = bottom3.map((item, i) => {
+      return `<tr>
+        <td style="text-align:center;font-weight:bold">${i+1}</td>
+        <td><strong>${item.unsur.kode}</strong> - ${item.unsur.nama}<br><small>NRR: ${item.nrr.toFixed(2)}</small></td>
+        <td><em>Memerlukan tinjauan SOP terkait ${item.unsur.nama.toLowerCase()}.</em></td>
+      </tr>`;
+    }).join("");
+
+    // Bab V: Kesimpulan
+    $("lap-kesimpulan-mutu").textContent = hasil.mutu.label.toUpperCase();
+    $("lap-kesimpulan-angka").textContent = hasil.ikm.toFixed(2);
+    $("lap-unsur-terlemah").textContent = bottom3[0].unsur.nama;
+
+  });
+</script>
+</body>
+</html>
