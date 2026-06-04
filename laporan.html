@@ -237,7 +237,7 @@
       </tr>`;
     }).join("");
     
-    $("lap-ikm-score").textContent = hasil.ikm.toFixed(2);
+    $("lap-ikm-score").textContent = hasil.nik.toFixed(2);
     $("lap-ikm-mutu").textContent = `${hasil.mutu.grade} - ${hasil.mutu.label.toUpperCase()}`;
     $("lap-kategori-text").textContent = `"${hasil.mutu.label}" (Mutu ${hasil.mutu.grade})`;
 
@@ -253,7 +253,7 @@
 
     // Bab V: Kesimpulan
     $("lap-kesimpulan-mutu").textContent = hasil.mutu.label.toUpperCase();
-    $("lap-kesimpulan-angka").textContent = hasil.ikm.toFixed(2);
+    $("lap-kesimpulan-angka").textContent = hasil.nik.toFixed(2);
     $("lap-unsur-terlemah").textContent = bottom3[0].unsur.nama;
 
   });

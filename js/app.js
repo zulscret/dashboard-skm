@@ -105,7 +105,7 @@ function renderCharts(hasil) {
   // Render Trend Line
   const historyData = Storage.getHistoriTren();
   // Override the last null item with the current IKM
-  historyData[historyData.length - 1].ikm = parseFloat(hasil.ikm.toFixed(2));
+  historyData[historyData.length - 1].ikm = parseFloat(hasil.nik.toFixed(2));
   Charts.renderLineTrend("chart-trend", historyData);
 }
 
