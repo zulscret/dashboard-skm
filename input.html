@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input Data SKM — Perpustakaan Amir Machmud</title>
+  <meta name="description" content="Halaman input data responden Survei Kepuasan Masyarakat (SKM) Perpustakaan Amir Machmud." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<script>
+  // PROTEKSI HALAMAN ADMIN
+  if (sessionStorage.getItem("skm_admin_logged_in") !== "true") {
+    window.location.href = "login.html";
+  }
+  function logout() {
+    sessionStorage.removeItem("skm_admin_logged_in");
+    window.location.href = "login.html";
+  }
+</script>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div style="font-size:20px;margin-bottom:6px">🏛</div>
+      <div class="sidebar-brand-title">Dashboard SKM</div>
+      <div class="sidebar-brand-sub">Perpustakaan Amir Machmud</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Menu Utama</div>
+      <a class="nav-item" href="admin.html">Dashboard IKM</a>
+      <a class="nav-item active" href="input.html">Input Data</a>
+      <a class="nav-item" href="index.html" target="_blank">Halaman Publik</a>
+      <div class="sidebar-section-label" style="margin-top:16px">Lainnya</div>
+      <a class="nav-item" href="https://form.jotform.com/251830774401453" target="_blank">Form Survei Jotform</a>
+      <div class="nav-item" onclick="logout()" style="color: var(--red-light); margin-top: 20px;">Keluar / Logout</div>
+    </nav>
+    <div class="sidebar-footer">
+      Dasar Hukum:<br>
+      <strong style="color:rgba(255,255,255,0.5)">PermenpanRB No. 14/2017</strong><br>
+      Survei Kepuasan Masyarakat
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <div class="topbar-title">Input & Kelola Data SKM</div>
+          <div class="topbar-sub">Kementerian Dalam Negeri RI</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <a href="admin.html" class="btn btn-outline btn-sm">Kembali ke Dashboard</a>
+      </div>
+    </header>
+
+    <div class="page-body">
+      <!-- BREADCRUMB -->
+      <div class="breadcrumb" style="margin-bottom:24px;">
+        <span>Beranda</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Input Data</span>
+      </div>
+
+      <!-- HEADER INFO -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+        <div>
+          <h1 style="font-size:24px; color:var(--navy); font-weight:800; line-height:1.2;">Kelola Data Responden</h1>
+          <p style="color:var(--text-muted); font-size:13px;">Format sesuai PermenpanRB No. 14 Tahun 2017 (Skala 1-4)</p>
+        </div>
+        <div style="background:var(--navy-pale); color:var(--navy); padding:8px 16px; border-radius:var(--radius); font-weight:700; font-size:13px;" id="responden-count-badge">
+          0 Responden Tersimpan
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-csv" onclick="switchTab('csv')">Upload CSV (Jotform)</button>
+        <button class="tab-btn" id="tab-data" onclick="switchTab('data')">Data Tersimpan</button>
+        <button class="tab-btn" id="tab-manual" onclick="switchTab('manual')">Input Manual</button>
+      </div>
+
+      <!-- TAB: UPLOAD CSV (JOTFORM) -->
+      <div class="tab-panel active" id="panel-csv">
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-body">
+            <div id="alert-csv"></div>
+            
+            <div style="background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.2); border-radius:var(--radius); padding:16px; margin-bottom:24px;">
+              <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:6px;">✅ Auto-Detect Jotform</div>
+              <div style="font-size:12px; color:var(--text-secondary); line-height:1.6;">
+                Sistem otomatis membaca export dari link Jotform perpustakaan. Jawaban teks otomatis dikonversi ke angka 1-4. Urutan Q11 (Sarana) & Q12 (Pengaduan) yang terbalik otomatis disesuaikan.
+              </div>
+            </div>
+
+            <!-- Drop Zone -->
+            <div class="drop-zone" id="drop-zone" onclick="document.getElementById('csv-file-input').click()">
+              <div class="drop-zone-icon">📂</div>
+              <div class="drop-zone-title">Klik atau drag & drop file CSV di sini</div>
+              <div class="drop-zone-sub">Format: .csv dari Jotform Export</div>
+              <input type="file" id="csv-file-input" accept=".csv" style="display:none" onchange="handleCSVFile(this.files[0])" />
+            </div>
+
+            <!-- Column Mapping (hidden until file loaded) -->
+            <div id="csv-mapping-section" style="display:none; margin-top:24px; border-top:1px solid var(--border); padding-top:24px;">
+              <div class="section-title">Pemetaan Kolom CSV → Unsur SKM</div>
+              <div id="csv-mapping-grid" class="form-grid"></div>
+              <div style="margin-top:24px; display:flex; gap:12px;">
+                <button class="btn btn-primary" onclick="importCSV()">Simpan Data</button>
+                <button class="btn btn-outline" onclick="resetCSV()">Batal</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-header-title">Panduan Export Jotform</div></div>
+          <div class="card-body">
+            <ol style="font-size:12px; color:var(--text-secondary); line-height:2; padding-left:20px; margin:0;">
+              <li>Login ke akun <strong>Jotform</strong>.</li>
+              <li>Buka form SKM Perpustakaan lalu klik <strong>Submissions</strong>.</li>
+              <li>Klik tombol <strong>Download All</strong> di kanan atas, pilih <strong>Download as CSV</strong>.</li>
+              <li>Upload file CSV yang didownload ke kotak di atas.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: DATA TERSIMPAN -->
+      <div class="tab-panel" id="panel-data">
+        <div class="card">
+          <div class="card-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+              <div style="font-size:14px; font-weight:700; color:var(--navy);">Daftar Responden SKM</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <button class="btn btn-outline btn-sm" onclick="exportCSV()">Export Backup CSV</button>
+                <button class="btn btn-outline btn-sm" onclick="loadDemoData()" style="color:#c47a00;border-color:#c47a00;">Muat Demo Data</button>
+                <button class="btn btn-danger btn-sm" onclick="clearAllData()">Hapus Semua Data</button>
+              </div>
+            </div>
+            
+            <div id="alert-data"></div>
+            
+            <div class="tbl-wrap" style="max-height:600px; overflow-y:auto;">
+              <table>
+                <thead style="position:sticky; top:0; z-index:10;">
+                  <tr>
+                    <th>ID</th><th>Tanggal</th><th>JK</th><th>Usia</th>
+                    <th>Pendidikan</th><th>Layanan</th>
+                    <th>U1</th><th>U2</th><th>U3</th><th>U4</th><th>U5</th>
+                    <th>U6</th><th>U7</th><th>U8</th><th>U9</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbl-data-body">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+            <div id="data-empty" style="text-align:center;padding:40px;color:var(--text-muted);display:none;background:var(--bg);border-radius:var(--radius);margin-top:10px;">
+              Belum ada data responden. Silakan upload CSV dari Jotform.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: INPUT MANUAL -->
+      <div class="tab-panel" id="panel-manual">
+        <div class="card">
+          <div class="card-body">
+            <div id="alert-manual"></div>
+            <form id="form-manual" onsubmit="submitManual(event)">
+
+              <!-- Profil Responden -->
+              <div class="section-title">Profil Responden</div>
+              <div class="form-grid" style="margin-bottom:32px">
+                <div class="form-group">
+                  <label for="f-tanggal">Tanggal Survei</label>
+                  <input type="date" id="f-tanggal" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label for="f-layanan">Jenis Layanan</label>
+                  <select id="f-layanan" class="form-control" required>
+                    <option value="">— Pilih Layanan —</option>
+                    <option>Sirkulasi</option>
+                    <option>Baca di Tempat</option>
+                    <option>Audiovisual</option>
+                    <option>Konsultasi</option>
+                    <option>Baca Koran</option>
+                    <option>Majalah Tempo</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-jk">Jenis Kelamin</label>
+                  <select id="f-jk" class="form-control" required>
+                    <option value="">— Pilih —</option>
+                    <option value="L">Laki-laki</option>
+                    <option value="P">Perempuan</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-usia">Usia (tahun)</label>
+                  <input type="number" id="f-usia" class="form-control" min="15" max="99" required />
+                </div>
+                <div class="form-group">
+                  <label for="f-pendidikan">Pendidikan Terakhir</label>
+                  <select id="f-pendidikan" class="form-control" required>
+                    <option value="">— Pilih —</option>
+                    <option>SD</option><option>SMP</option><option>SMA</option>
+                    <option>D3</option><option>S1</option><option>S2</option><option>S3</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-pekerjaan">Pekerjaan</label>
+                  <select id="f-pekerjaan" class="form-control" required>
+                    <option value="">— Pilih —</option>
+                    <option>PNS</option><option>TNI</option><option>POLRI</option>
+                    <option>Swasta</option><option>Wirausaha</option>
+                    <option>Mahasiswa</option><option>Lainnya</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 9 Unsur SKM -->
+              <div class="section-title">Penilaian 9 Unsur SKM</div>
+              <p style="font-size:12px;color:var(--text-muted);margin-bottom:20px">
+                Skala 1 = Tidak Baik, 2 = Kurang Baik, 3 = Baik, 4 = Sangat Baik
+              </p>
+
+              <div id="unsur-inputs">
+                <!-- Rendered by JS -->
+              </div>
+
+              <!-- Saran -->
+              <div class="form-group full" style="margin-top:24px">
+                <label for="f-saran">Saran / Masukan (Opsional)</label>
+                <textarea id="f-saran" class="form-control" rows="3"></textarea>
+              </div>
+
+              <!-- Actions -->
+              <div style="display:flex;gap:12px;margin-top:32px;border-top:1px solid var(--border);padding-top:24px;">
+                <button type="submit" class="btn btn-primary">Simpan Responden</button>
+                <button type="button" class="btn btn-outline" onclick="resetForm()">Reset Form</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-body -->
+  </div><!-- /main-content -->
+</div>
+
+<!-- Scripts -->
+<script src="js/data.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/csv-parser.js"></script>
+<script>
+// ===== INPUT PAGE CONTROLLER =====
+let csvHeaders = []; let csvRows = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+  Storage.init();
+  renderUnsurInputs();
+  setTodayDate();
+  updateRespondenCount();
+  setupDropZone();
+  if (new URLSearchParams(location.search).get("tab") === "data") switchTab("data");
+});
+
+function setTodayDate() { const el = document.getElementById("f-tanggal"); if(el) el.value = new Date().toISOString().split("T")[0]; }
+
+function switchTab(name) {
+  ["manual","csv","data"].forEach(t => {
+    document.getElementById(`tab-${t}`).classList.toggle("active", t === name);
+    document.getElementById(`panel-${t}`).classList.toggle("active", t === name);
+  });
+  if (name === "data") renderDataTable();
+}
+
+function renderUnsurInputs() {
+  const container = document.getElementById("unsur-inputs");
+  if (!container) return;
+  container.innerHTML = UNSUR_SKM.map((u, i) => `
+    <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px dashed var(--border-dark)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <label style="font-weight:700; color:var(--navy); font-size:13px;">${u.kode} — ${u.nama}</label>
+      </div>
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">${u.deskripsi}</p>
+      <div class="likert-row" id="likert-${i}">
+        ${[1,2,3,4].map(v => `<div class="likert-opt" data-v="${v}" onclick="selectLikert(this,${i},${v})">${v} - ${['Tidak Baik','Kurang Baik','Baik','Sangat Baik'][v-1]}</div>`).join("")}
+      </div>
+      <input type="hidden" id="u${i+1}-val" name="u${i+1}" required />
+    </div>`).join("");
+}
+
+function selectLikert(btn, unsurIdx, val) {
+  document.querySelectorAll(`#likert-${unsurIdx} .likert-opt`).forEach(b => {
+    b.className = "likert-opt"; // reset
+  });
+  btn.classList.add(`sel-${val}`);
+  document.getElementById(`u${unsurIdx+1}-val`).value = val;
+}
+
+function submitManual(e) {
+  e.preventDefault();
+  const u = [];
+  for (let i = 1; i <= 9; i++) {
+    const val = parseInt(document.getElementById(`u${i}-val`).value);
+    if (!val) { showAlert("alert-manual","error","Semua 9 unsur harus diisi."); return; }
+    u.push(val);
+  }
+  const responden = {
+    tanggal: document.getElementById("f-tanggal").value, jam: 1,
+    jk: document.getElementById("f-jk").value, usia: parseInt(document.getElementById("f-usia").value),
+    pendidikan: document.getElementById("f-pendidikan").value, pekerjaan: document.getElementById("f-pekerjaan").value,
+    layanan: document.getElementById("f-layanan").value, u, saran: document.getElementById("f-saran").value.trim(),
+  };
+  Storage.setLiveMode(); Storage.addResponden(responden);
+  showAlert("alert-manual","success","Data responden berhasil disimpan!");
+  resetForm(); updateRespondenCount();
+}
+
+function resetForm() {
+  document.getElementById("form-manual").reset(); setTodayDate();
+  document.querySelectorAll(".likert-opt").forEach(b => b.className = "likert-opt");
+  for (let i = 1; i <= 9; i++) { const el = document.getElementById(`u${i}-val`); if(el) el.value = ""; }
+}
+
+// --- CSV Logic ---
+function setupDropZone() {
+  const dz = document.getElementById("drop-zone");
+  if(!dz) return;
+  dz.addEventListener("dragover", e=>{e.preventDefault();dz.classList.add("drag-over");});
+  dz.addEventListener("dragleave", ()=>dz.classList.remove("drag-over"));
+  dz.addEventListener("drop", e=>{e.preventDefault();dz.classList.remove("drag-over");handleCSVFile(e.dataTransfer.files[0]);});
+}
+
+function handleCSVFile(file) {
+  if (!file) return;
+  if (!file.name.endsWith(".csv")) { showAlert("alert-csv","error","File harus format .csv"); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      csvRows = CSVParser.parseCSV(e.target.result);
+      csvHeaders = Object.keys(csvRows[0] || {});
+      const autoMap = CSVParser.autoDetectMapping(csvHeaders);
+      renderMappingUI(autoMap);
+      showAlert("alert-csv","success",`File dimuat: ${csvRows.length} baris. Periksa pemetaan kolom.`);
+    } catch(err) { showAlert("alert-csv","error",err.message); }
+  };
+  reader.readAsText(file, "UTF-8");
+}
+
+function renderMappingUI(autoMap) {
+  const fields = [
+    {key:"tanggal",label:"Tanggal"},{key:"jk",label:"Jenis Kelamin"},{key:"usia",label:"Usia"},
+    {key:"pendidikan",label:"Pendidikan"},{key:"pekerjaan",label:"Pekerjaan"},{key:"layanan",label:"Layanan"},
+    {key:"u1",label:"U1 (Persyaratan)"},{key:"u2",label:"U2 (Prosedur)"},{key:"u3",label:"U3 (Waktu)"},
+    {key:"u4",label:"U4 (Biaya)"},{key:"u5",label:"U5 (Produk)"},{key:"u6",label:"U6 (Kompetensi)"},
+    {key:"u7",label:"U7 (Perilaku)"},{key:"u8",label:"U8 (Pengaduan - di Jotform Q12)"},{key:"u9",label:"U9 (Sarana - di Jotform Q11)"},
+    {key:"saran",label:"Saran"}
+  ];
+  const required = ["u1","u2","u3","u4","u5","u6","u7","u8","u9"];
+  const opts = `<option value="">— Abaikan / Pilih Kolom —</option>` + csvHeaders.map(h => `<option value="${h}">${h}</option>`).join("");
+  document.getElementById("csv-mapping-grid").innerHTML = fields.map(f => `
+    <div class="form-group"><label>${f.label}${required.includes(f.key)?'<span style="color:var(--red)">*</span>':''}</label>
+    <select class="form-control" id="map-${f.key}">${opts}</select></div>`).join("");
+  
+  for (const [k, v] of Object.entries(autoMap)) {
+    const el = document.getElementById(`map-${k}`); if(el) el.value = v;
+  }
+  document.getElementById("csv-mapping-section").style.display = "block";
+}
+
+function importCSV() {
+  const mapping = {};
+  ["tanggal","jk","usia","pendidikan","pekerjaan","layanan","u1","u2","u3","u4","u5","u6","u7","u8","u9","saran"].forEach(k=>{
+    const el = document.getElementById(`map-${k}`); if(el&&el.value) mapping[k] = el.value;
+  });
+  const missing = ["u1","u2","u3","u4","u5","u6","u7","u8","u9"].filter(k=>!mapping[k]);
+  if(missing.length) { showAlert("alert-csv","error",`Kolom wajib belum dipetakan: ${missing.join(", ")}`); return; }
+
+  const { valid, errors } = CSVParser.convertToSKM(csvRows, mapping);
+  if(!valid.length) { showAlert("alert-csv","error","Tidak ada data valid yang bisa diimport."); return; }
+
+  Storage.setLiveMode();
+  const count = Storage.addBulkResponden(valid);
+  showAlert("alert-csv","success",`Berhasil import ${count} data.${errors.length ? ' Beberapa baris dilewati.' : ''}`);
+  updateRespondenCount(); resetCSV();
+}
+
+function resetCSV() {
+  csvRows = []; csvHeaders = [];
+  document.getElementById("csv-mapping-section").style.display = "none";
+  document.getElementById("csv-file-input").value = "";
+}
+
+// --- Data Table ---
+function renderDataTable() {
+  const all = Storage.getAllResponden();
+  const tbody = document.getElementById("tbl-data-body");
+  const empty = document.getElementById("data-empty");
+  if(!all.length) { tbody.innerHTML=""; empty.style.display="block"; return; }
+  empty.style.display = "none";
+  tbody.innerHTML = all.slice().reverse().map(r => `
+    <tr>
+      <td style="font-size:11px;color:var(--text-muted)">#${r.id}</td>
+      <td>${r.tanggal}</td><td>${r.jk}</td><td>${r.usia}</td><td>${r.pendidikan}</td>
+      <td style="white-space:nowrap">${r.layanan}</td>
+      ${r.u.map(v=>`<td style="text-align:center;font-weight:700;color:${['#c0392b','#c47a00','#1a5fa8','#1a8a4a'][v-1]}">${v}</td>`).join("")}
+      <td><button onclick="deleteRow(${r.id})" style="background:var(--red-pale);border:none;color:var(--red);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:11px;">Hapus</button></td>
+    </tr>`).join("");
+}
+
+function deleteRow(id) { if(confirm("Hapus data ini?")) { Storage.deleteResponden(id); renderDataTable(); updateRespondenCount(); } }
+function clearAllData() {
+  if(confirm("Hapus SEMUA data?")) { Storage.clearAll(); Storage.init(); renderDataTable(); updateRespondenCount(); showAlert("alert-data","success","Semua data dihapus. Demo data aktif."); }
+}
+function loadDemoData() { Storage.clearAll(); Storage.setDemoMode(); renderDataTable(); updateRespondenCount(); showAlert("alert-data","success","Data demo dimuat."); }
+function exportCSV() {
+  const all = Storage.getAllResponden(); if(!all.length) return alert("Kosong.");
+  const csv = [["id","tanggal","jenis_kelamin","usia","pendidikan","pekerjaan","layanan","u1","u2","u3","u4","u5","u6","u7","u8","u9","saran"].join(","),
+    ...all.map(r=>[r.id,r.tanggal,r.jk,r.usia,r.pendidikan,r.pekerjaan,r.layanan,...r.u,`"${r.saran||""}"`].join(","))].join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8;"}));
+  a.download = `Backup_SKM_${new Date().toISOString().split("T")[0]}.csv`; a.click();
+}
+
+function updateRespondenCount() {
+  const n = Storage.getAllResponden().length;
+  const el = document.getElementById("responden-count-badge");
+  if(el) el.textContent = `${n} Responden Tersimpan`;
+}
+function showAlert(id, type, msg) {
+  const el = document.getElementById(id); if(!el) return;
+  el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  setTimeout(() => el.innerHTML="", 5000);
+}
+</script>
+</body>
+</html>

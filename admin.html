@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin Dashboard SKM — Perpustakaan Amir Machmud</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<script>
+  // PROTEKSI HALAMAN ADMIN
+  if (sessionStorage.getItem("skm_admin_logged_in") !== "true") {
+    window.location.href = "login.html";
+  }
+  function logout() {
+    sessionStorage.removeItem("skm_admin_logged_in");
+    window.location.href = "login.html";
+  }
+</script>
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div style="font-size:20px;margin-bottom:6px">🏛</div>
+      <div class="sidebar-brand-title">Dashboard SKM</div>
+      <div class="sidebar-brand-sub">Perpustakaan Amir Machmud</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Menu Utama</div>
+      <a class="nav-item active" href="admin.html">Dashboard IKM</a>
+      <a class="nav-item" href="input.html">Input Data</a>
+      <a class="nav-item" href="index.html" target="_blank">Halaman Publik</a>
+      <div class="sidebar-section-label" style="margin-top:16px">Lainnya</div>
+      <a class="nav-item" href="https://form.jotform.com/251830774401453" target="_blank">Form Survei Jotform</a>
+      <div class="nav-item" onclick="printDashboard()">Cetak Laporan</div>
+      <div class="nav-item" onclick="logout()" style="color: var(--red-light); margin-top: 20px;">Keluar / Logout</div>
+    </nav>
+    <div class="sidebar-footer">
+      Dasar Hukum:<br>
+      <strong style="color:rgba(255,255,255,0.5)">PermenpanRB No. 14/2017</strong><br>
+      Survei Kepuasan Masyarakat
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <div class="topbar-title">Dashboard IKM</div>
+          <div class="topbar-sub" id="topbar-instansi">Kementerian Dalam Negeri RI</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span class="demo-badge" id="mode-badge" style="display:none"><span class="demo-dot"></span> DATA DEMO</span>
+        <select class="filter-select" id="filter-layanan"></select>
+        <a href="input.html" class="btn btn-outline btn-sm">➕ Input Data</a>
+      </div>
+    </header>
+
+    <!-- PAGE BODY -->
+    <div class="page-body">
+
+      <!-- BREADCRUMB -->
+      <div class="breadcrumb">
+        <span>Beranda</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Dashboard IKM</span>
+        <span class="breadcrumb-sep">|</span>
+        <span id="bc-periode" style="color:var(--text-muted)">—</span>
+      </div>
+
+      <!-- HERO IKM -->
+      <div class="ikm-hero-grid section-gap">
+        <div class="ikm-main-card">
+          <div class="ikm-label-small">Nilai IKM Konversi</div>
+          <div class="ikm-score" id="ikm-score-val">—</div>
+          <div style="margin-top:4px">
+            <span class="ikm-score-max">/ 100</span>
+          </div>
+          <div style="margin-top:14px">
+            <span id="ikm-mutu-badge" class="mutu-badge" style="background:rgba(255,255,255,0.15);color:white">—</span>
+          </div>
+          <div class="ikm-periode" id="ikm-periode">—</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Mutu Pelayanan</div>
+          <div class="stat-card-value" id="mutu-grade" style="font-size:44px">—</div>
+          <div class="stat-card-sub" id="mutu-label">—</div>
+          <div class="divider"></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="mutu-badge mutu-A" style="font-size:10px">A ≥88.31</span>
+            <span class="mutu-badge mutu-B" style="font-size:10px">B 76.61–88.30</span>
+            <span class="mutu-badge mutu-C" style="font-size:10px">C 65–76.60</span>
+            <span class="mutu-badge mutu-D" style="font-size:10px">D &lt;65</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Total Responden</div>
+          <div class="stat-card-value" id="total-resp" style="color:var(--navy)">—</div>
+          <div class="stat-card-sub">Pengguna yang disurvei</div>
+          <div class="divider"></div>
+          <div class="stat-card-label">Bobot per Unsur</div>
+          <div style="font-size:18px;font-weight:800;color:var(--navy)">0,11</div>
+          <div class="stat-card-sub">9 unsur × 1/9</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Unsur Terlemah</div>
+          <div class="stat-card-value" id="unsur-terendah-kode" style="font-size:20px;color:var(--red)">—</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:2px" id="unsur-terendah-nama">—</div>
+          <div class="divider"></div>
+          <div class="stat-card-label">Prioritas Perbaikan</div>
+          <div style="font-size:12px;font-weight:600;color:var(--red)">Jangka Pendek</div>
+        </div>
+      </div>
+
+      <!-- 9 UNSUR -->
+      <div class="section-gap">
+        <div class="section-title">9 Unsur SKM — PermenpanRB No. 14/2017
+          <span style="font-size:12px;font-weight:400;color:var(--text-muted);margin-left:auto">Klik card untuk lihat distribusi jawaban</span>
+        </div>
+        <div class="unsur-grid" id="grid-unsur"></div>
+      </div>
+
+      <!-- CHARTS -->
+      <div class="charts-row section-gap">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-title">Perbandingan Nilai Rata-rata per Unsur</div>
+            <span style="font-size:11px;color:var(--text-muted)">Skala 1–4</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="chart-bar"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-title">Distribusi Jawaban</div>
+            <span class="mutu-badge mutu-B" style="font-size:10px" id="distribusi-label">U1</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="chart-donut"></canvas></div>
+            <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:8px">Klik card unsur untuk ganti tampilan</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFIL RESPONDEN -->
+      <div class="section-gap">
+        <div class="section-title">Profil Responden</div>
+        <div class="profil-row">
+          <div class="card">
+            <div class="card-header"><div class="card-header-title">Jenis Kelamin</div></div>
+            <div class="card-body" style="padding-top:10px">
+              <div style="display:flex;gap:10px;margin-bottom:12px">
+                <div style="flex:1;text-align:center;background:var(--navy-pale);border-radius:var(--radius-sm);padding:10px">
+                  <div style="font-size:22px;font-weight:800;color:#2980b9" id="stat-laki">—</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Laki-laki</div>
+                </div>
+                <div style="flex:1;text-align:center;background:#fdf0f8;border-radius:var(--radius-sm);padding:10px">
+                  <div style="font-size:22px;font-weight:800;color:#c0392b" id="stat-perempuan">—</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Perempuan</div>
+                </div>
+              </div>
+              <div class="chart-wrap-sm"><canvas id="chart-jk"></canvas></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-header-title">Tingkat Pendidikan</div></div>
+            <div class="card-body">
+              <div class="chart-wrap" style="height:250px"><canvas id="chart-pendidikan"></canvas></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-header-title">Distribusi Layanan</div></div>
+            <div class="card-body">
+              <div class="chart-wrap-sm"><canvas id="chart-layanan"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABEL TINDAK LANJUT -->
+      <div class="section-gap">
+        <div class="section-title">Rencana Tindak Lanjut Perbaikan SKM</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>#</th><th>Unsur SKM</th><th>Nilai NRR</th><th>Mutu</th><th>Prioritas Perbaikan</th></tr>
+            </thead>
+            <tbody id="tbl-tindak-lanjut"></tbody>
+          </table>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:10px">
+          ℹ️ Sesuai PermenpanRB No. 14/2017 Bab VII: prioritas perbaikan dimulai dari unsur dengan nilai paling rendah.
+        </p>
+      </div>
+
+      <!-- SARAN -->
+      <div class="section-gap">
+        <div class="section-title">Saran & Masukan Responden</div>
+        <div class="saran-grid" id="saran-list"></div>
+      </div>
+
+    </div><!-- /page-body -->
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div><strong>Dashboard SKM — Perpustakaan Amir Machmud</strong> · Kementerian Dalam Negeri Republik Indonesia</div>
+      <div>Dibuat mengacu pada <strong>PermenpanRB No. 14 Tahun 2017</strong> tentang Pedoman Penyusunan Survei Kepuasan Masyarakat</div>
+    </footer>
+
+  </div><!-- /main-content -->
+</div><!-- /admin-layout -->
+
+<script src="js/data.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

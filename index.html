@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>IKM Perpustakaan Amir Machmud — Kemendagri</title>
+  <meta name="description" content="Hasil Survei Kepuasan Masyarakat (IKM) Perpustakaan Amir Machmud Kementerian Dalam Negeri RI, mengacu pada PermenpanRB No. 14 Tahun 2017."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="public-layout">
+
+  <!-- HEADER RESMI -->
+  <header class="public-header">
+    <div class="public-header-inner">
+      <div class="gov-logo">🏛</div>
+      <div class="gov-header-text">
+        <div class="gov-header-title">Perpustakaan Amir Machmud</div>
+        <div class="gov-header-sub">Kementerian Dalam Negeri Republik Indonesia</div>
+        <div class="gov-header-npp">NPP: 3171014A0000008 &nbsp;|&nbsp; "Suluh Bacaan Politik dan Pemerintahan"</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="public-hero">
+    <div class="public-hero-inner">
+      <div class="public-hero-grid">
+        <div>
+          <div class="public-hero-subtitle">⭐ Hasil Survei Kepuasan Masyarakat</div>
+          <h1 class="public-hero-title">Indeks Kepuasan Masyarakat<br>Perpustakaan Amir Machmud</h1>
+          <p class="public-hero-desc">
+            Kami berkomitmen untuk terus meningkatkan kualitas layanan perpustakaan.
+            Nilai IKM ini dihitung berdasarkan 9 unsur layanan sesuai
+            <strong style="color:rgba(255,255,255,0.9)">PermenpanRB No. 14 Tahun 2017</strong>.
+          </p>
+          <div style="margin-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <a href="https://form.jotform.com/251830774401453" target="_blank" class="btn-survey">
+              📝 Isi Survei Kepuasan
+            </a>
+            <span style="font-size:12px;color:rgba(255,255,255,0.5)">Bantu kami berkembang dengan mengisi survei</span>
+          </div>
+        </div>
+        <div class="public-ikm-box">
+          <div class="public-ikm-num" id="pub-ikm-val">—</div>
+          <div class="public-ikm-max">/ 100</div>
+          <div class="public-ikm-label">Nilai IKM Konversi</div>
+          <div class="public-mutu-badge" id="pub-mutu-badge">—</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:6px" id="pub-periode-label">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTEN UTAMA -->
+  <main style="flex:1">
+    <div class="page-body-centered">
+
+      <!-- INFO STRIP -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;margin-top:4px">
+        <div class="card" style="flex:1;min-width:150px">
+          <div class="card-body" style="padding:14px 18px">
+            <div class="stat-card-label">Total Responden</div>
+            <div class="stat-card-value" id="pub-total-resp" style="font-size:26px;color:var(--navy)">—</div>
+          </div>
+        </div>
+        <div class="card" style="flex:1;min-width:150px">
+          <div class="card-body" style="padding:14px 18px">
+            <div class="stat-card-label">Unsur Dinilai</div>
+            <div class="stat-card-value" style="font-size:26px;color:var(--navy)">9 Unsur</div>
+            <div class="stat-card-sub">Skala Likert 1–4</div>
+          </div>
+        </div>
+        <div class="card" style="flex:1;min-width:150px">
+          <div class="card-body" style="padding:14px 18px">
+            <div class="stat-card-label">Dasar Hukum</div>
+            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-top:4px">PermenpanRB</div>
+            <div class="stat-card-sub">No. 14 Tahun 2017</div>
+          </div>
+        </div>
+        <div class="card" style="flex:1;min-width:150px">
+          <div class="card-body" style="padding:14px 18px">
+            <div class="stat-card-label">Periode Survei</div>
+            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-top:4px" id="pub-periode-card">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NILAI PER UNSUR - tabel publik -->
+      <div class="section-gap">
+        <div class="section-title">
+          <span class="section-title-icon">📊</span>
+          Nilai Per Unsur Layanan
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Kode</th>
+                <th>Unsur Pelayanan</th>
+                <th>Nilai Rata-rata</th>
+                <th>Mutu</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody id="pub-tbl-unsur">
+              <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BAR CHART -->
+      <div class="section-gap">
+        <div class="section-title">
+          <span class="section-title-icon">📈</span>
+          Grafik Perbandingan Nilai per Unsur
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="chart-wrap">
+              <canvas id="pub-chart-bar"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA SURVEI -->
+      <div style="background:var(--navy-pale);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;text-align:center;margin-bottom:24px">
+        <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:8px">📝 Penilaian Anda Sangat Berarti</div>
+        <p style="color:var(--text-secondary);font-size:14px;margin-bottom:20px;max-width:500px;margin-inline:auto">
+          Bantu kami meningkatkan kualitas layanan dengan mengisi Survei Kepuasan Masyarakat.
+          Hanya membutuhkan 3–5 menit.
+        </p>
+        <a href="https://form.jotform.com/251830774401453" target="_blank" class="btn-survey" style="display:inline-flex">
+          📝 Isi Survei Sekarang
+        </a>
+      </div>
+
+      <!-- TABEL MUTU REFERENSI -->
+      <div class="section-gap">
+        <div class="section-title">
+          <span class="section-title-icon">📋</span>
+          Kategori Mutu Pelayanan
+          <span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:4px">(sesuai Tabel II PermenpanRB No. 14/2017)</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>Nilai Interval Konversi</th><th>Mutu Pelayanan</th><th>Kinerja Unit</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>88,31 – 100,00</td><td><span class="mutu-badge mutu-A">A — Sangat Baik</span></td><td>Sangat Baik</td></tr>
+              <tr><td>76,61 – 88,30</td><td><span class="mutu-badge mutu-B">B — Baik</span></td><td>Baik</td></tr>
+              <tr><td>65,00 – 76,60</td><td><span class="mutu-badge mutu-C">C — Kurang Baik</span></td><td>Kurang Baik</td></tr>
+              <tr><td>25,00 – 64,99</td><td><span class="mutu-badge mutu-D">D — Tidak Baik</span></td><td>Tidak Baik</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div><strong>Perpustakaan Amir Machmud — Kementerian Dalam Negeri Republik Indonesia</strong></div>
+    <div>Jl. Medan Merdeka Utara No. 7, Jakarta Pusat 10110</div>
+    <div style="margin-top:6px">
+      Dibuat mengacu pada <strong>PermenpanRB No. 14 Tahun 2017</strong> tentang Pedoman Penyusunan Survei Kepuasan Masyarakat Unit Penyelenggara Pelayanan Publik
+    </div>
+    <div style="margin-top:8px">
+      <a href="admin.html" style="color:rgba(255,255,255,0.3);font-size:11px;text-decoration:none">Portal Admin</a>
+    </div>
+  </footer>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/charts.js"></script>
+<script>
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = "#4a5c6e";
+
+document.addEventListener("DOMContentLoaded", () => {
+  Storage.init();
+  const responden = Storage.getAllResponden();
+  const info = Storage.getSurveyInfo();
+  const hasil = Calculator.hitung(responden);
+  if (!hasil) return;
+
+  // Hero IKM
+  animateNum("pub-ikm-val", hasil.nik, 1200);
+  const mutu = hasil.mutu;
+  const badge = document.getElementById("pub-mutu-badge");
+  if (badge) { badge.textContent = `${mutu.grade} — ${mutu.label}`; badge.style.background = mutu.color + "33"; }
+  document.getElementById("pub-periode-label").textContent = info.periode;
+  document.getElementById("pub-total-resp").textContent   = hasil.totalResponden;
+  document.getElementById("pub-periode-card").textContent = info.periode;
+
+  // Tabel unsur
+  const tbody = document.getElementById("pub-tbl-unsur");
+  if (tbody) {
+    tbody.innerHTML = hasil.nrrPerUnsur.map((nrr, i) => {
+      const m = Calculator.getMutuUnsur(nrr);
+      const pct = ((nrr - 1) / 3 * 100).toFixed(0);
+      return `<tr>
+        <td><span style="font-weight:800;color:var(--navy)">${UNSUR_SKM[i].kode}</span></td>
+        <td>${UNSUR_SKM[i].nama}</td>
+        <td>
+          <span style="font-weight:700;color:${m.color};font-size:16px">${nrr.toFixed(2)}</span>
+          <div class="progress-track" style="width:120px;margin-top:4px"><div class="progress-fill" style="width:${pct}%;background:${m.color}"></div></div>
+        </td>
+        <td><span class="mutu-badge mutu-${m.grade}">${m.grade} — ${m.label}</span></td>
+        <td style="font-size:12px;color:var(--text-muted)">${UNSUR_SKM[i].deskripsi}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  // Bar chart — public style (light colors)
+  const ctx = document.getElementById("pub-chart-bar")?.getContext("2d");
+  if (ctx) {
+    const colors = hasil.nrrPerUnsur.map(v => {
+      const m = Calculator.getMutuUnsur(v);
+      return m.grade === "A" ? "#27ae60" : m.grade === "B" ? "#2980b9" : m.grade === "C" ? "#c47a00" : "#c0392b";
+    });
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: UNSUR_SKM.map(u => u.kode),
+        datasets: [{
+          label: "Nilai Rata-rata",
+          data: hasil.nrrPerUnsur.map(v => parseFloat(v.toFixed(2))),
+          backgroundColor: colors.map(c => c + "22"),
+          borderColor: colors,
+          borderWidth: 2,
+          borderRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { title: items => UNSUR_SKM[items[0].dataIndex].nama } }
+        },
+        scales: {
+          y: { min: 1, max: 4, grid: { color: "#e2e8f0" } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+});
+
+function animateNum(id, target, dur) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const start = performance.now();
+  const step = now => {
+    const p = Math.min((now - start) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = (target * e).toFixed(2);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+</script>
+</body>
+</html>
